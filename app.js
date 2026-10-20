@@ -3,6 +3,7 @@ console.log("START JS");
 
 const board = document.getElementById("board");
 const cells = document.querySelectorAll(".cell"); /* vient recup les cells en tant que liste, meme selecteur que css */
+const hardModeToggle = document.getElementById("hard-mode-toggle");
 
 /* combo des index de grille qui forment un cas de victoire */
 const winCombos = [
@@ -22,9 +23,22 @@ let currentPlayer = "X"
 let currentAge = 10;
 
 
+function getHardModeStatus(){
+    return hardModeToggle.getAttribute("hard-mode") === "true";
+}
+
+hardModeToggle.addEventListener("click", () => {
+    const isEnabled = !getHardModeStatus();
+    hardModeToggle.setAttribute("hard-mode", String(isEnabled));
+    hardModeToggle.textContent = `Hard mode: ${isEnabled ? "on" : "off"}`;
+});
+
 function fade(){
     for(let i=0; i<9; i++){
-        if(cells[i].dataset.age == currentAge-6) cells[i].textContent = cells[i].textContent.toLowerCase();
+        if (!getHardModeStatus()){
+            if(cells[i].dataset.age == currentAge-6) 
+                cells[i].textContent = cells[i].textContent.toLowerCase();
+        }
         if(cells[i].dataset.age == currentAge-7) cells[i].textContent = "";
     }
 }
